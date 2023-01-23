@@ -9,7 +9,6 @@ import (
 
 var custom = flag.String("custom", "", "自定义测试NF影片ID\n绝命毒师的ID是70143836")
 var address = flag.String("address", "", "本机网卡的IP")
-var proxy = flag.String("proxy", "", "代理地址")
 
 func main() {
 
@@ -18,7 +17,6 @@ func main() {
 	r := verify.NewVerify(verify.Config{
 		LocalAddr: *address,
 		Custom:    *custom,
-		Proxy:     *proxy,
 	})
 
 	printer.Print(*r)

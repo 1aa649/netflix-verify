@@ -10,9 +10,7 @@ import (
 	"time"
 )
 
-func RequestIP(requrl string, ip string, localAddr string, proxyUrl string) (string, error) {
-	var proxy *url.URL
-	var err error
+func RequestIP(requrl string, ip string, localAddr string) (string, error) {
 	if ip == "" {
 		return "", errors.New("IP is empty")
 	}
@@ -25,16 +23,11 @@ func RequestIP(requrl string, ip string, localAddr string, proxyUrl string) (str
 		ip = host
 	}
 	newrequrl := strings.Replace(requrl, host, ip, 1)
-	if proxyUrl != "" {
-		if proxy, err = url.Parse(proxyUrl); err != nil {
-			return "", errors.New("proxy parse error")
-		}
-	}
-
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{ServerName: host},
-			Proxy:           http.ProxyURL(proxy),
+			// goodryb pull
+			Proxy: http.ProxyFromEnvironment,
 			DialContext: (&net.Dialer{
 				LocalAddr: &net.TCPAddr{
 					IP: net.ParseIP(localAddr),
